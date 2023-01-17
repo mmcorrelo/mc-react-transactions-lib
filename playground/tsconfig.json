@@ -29,8 +29,7 @@
     "noEmit": true
   },
   "include": [
-    "src"
-, "../src/components"  ],
+    "src", "../src/components"],
   "exclude": [
     "node_modules",
     "build"

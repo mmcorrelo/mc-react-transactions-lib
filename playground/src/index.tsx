@@ -1,14 +1,12 @@
-import './index.css'
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 
-const container = document.getElementById('root') as HTMLElement;
+import './index.css';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'mc-react-transactions-lib/dist/index.css';
 
-//ReactDOM.render(<App />, document.getElementById('root'))
+const container = document.getElementById('root') as HTMLElement;
 const root = ReactDOM.createRoot(container);
 
-
-//ReactDOM.render(<App />, container);
-
-root.render(<App />)
+root.render(<App />);

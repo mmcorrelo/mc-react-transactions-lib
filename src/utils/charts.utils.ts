@@ -1,7 +1,8 @@
 import { EChartsOption } from 'echarts-for-react';
-import { IPieConfiguration } from '../types';
+import { ILineChartConfiguration, ILineChartData, IPieChartConfiguration } from '../types';
+import { getReadableDate } from './dates.utils';
 
-export function configurePieChart({ data, name, text }: IPieConfiguration): EChartsOption {
+export function configurePieChart({ data, name, text }: IPieChartConfiguration): EChartsOption {
   if (!data) {
     return {};
   }
@@ -39,4 +40,70 @@ export function configurePieChart({ data, name, text }: IPieConfiguration): ECha
       }
     ]
   };
+}
+
+export function configureLineChart({ data, text, period }: ILineChartConfiguration): EChartsOption {
+  const { dates, series }: { names: string[]; dates: string[]; series: Array<any>; } = computeLineChartData();
+
+  return {
+    title: {
+      text,
+      x: 'center',
+      textStyle: {
+        fontWeight: 'normal',
+        fontSize: 28
+      }
+    },
+    tooltip: {
+      trigger: 'axis'
+    },
+    grid: {
+      top: '70px',
+      left: '3%',
+      right: '4%',
+      bottom: '2%',
+      containLabel: true
+    },
+    xAxis: [
+      {
+        type: 'category',
+        boundaryGap: false,
+        data: dates.map((d: string) => getReadableDate(d, period)),
+        axisLabel: {
+          fontWeight: 'bolder'
+        }
+      }
+    ],
+    yAxis: [
+      {
+        type: 'value',
+        axisLabel: {
+          fontWeight: 'bold'
+        }
+      }
+    ],
+    series: [...series]
+  };
+
+  function computeLineChartData() {
+    const groupedData: Record<string, Record<string, number>> = data.reduce((result: Record<string, Record<string, number>>, item: ILineChartData) => {
+      if (!result[item.name]) {
+        result[item.name] = {};
+      }
+
+      result[item.name][item.date] = item.value;
+      return result;
+    }, {});
+
+    const names: Array<string> = Object.keys(groupedData);
+    const dates = Array.from(new Set(data.map((item: ILineChartData) => item.date))).sort();
+    const series = names.map((name: string) => ({
+      name,
+      type: 'line',
+      smooth: true,
+      data: dates.map((date: string) => ({ date, value: groupedData[name][date] || 0 }))
+    }));
+
+    return { names, dates, series };
+  }
 }

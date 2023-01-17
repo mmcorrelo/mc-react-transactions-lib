@@ -1,17 +1,19 @@
-import React from 'react';
-import ReactECharts, { EChartsOption } from 'echarts-for-react';
-import { IPieConfiguration } from '../../types';
+import React, { useEffect, useState } from 'react';
+import ReactECharts from 'echarts-for-react';
+import { IPieChartConfiguration } from '../../types';
 import { configurePieChart } from '../../utils';
 
-export function PieChart(props: IPieConfiguration) {
-  const configs: EChartsOption = { ...(props.option || configurePieChart(props)) };
+export default function PieChart(props: IPieChartConfiguration) {
+  const [option, setOption] = useState({});
+
+  useEffect(() => {
+    setOption({ ...(props.option || configurePieChart(props)) });
+  }, [props.data, props.text, props.name, props.option, configurePieChart]);
 
   return (
-    <React.Fragment>
-      <ReactECharts
-        option={configs}
-        style={{ height: props.height || 600, width: props.width || 'auto' }}
-      />
-    </React.Fragment>
+    <ReactECharts
+      option={option}
+      style={{ height: props.height || 600, width: props.width || 'auto' }}
+    />
   );
 }
