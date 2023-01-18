@@ -1,12 +1,19 @@
-import { EChartsOption } from 'echarts-for-react'
+import { EChartsOption } from 'echarts-for-react';
 import { EDatePeriod } from './dates';
+
+
+export enum EChartType {
+  Breakdown = 0,
+  Trend,
+  Percentage
+}
 
 export interface IChartData {
   value: number;
   name: string;
 }
 
-export interface ILineChartData extends IChartData{
+export interface ILineChartData extends IChartData {
   date: string;
 }
 

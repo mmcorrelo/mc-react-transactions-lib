@@ -1,0 +1,97 @@
+.loading-chart-skeleton {
+  background-color: #f2f2f2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: relative;
+}
+
+.loading-chart-skeleton-title {
+  max-width: 900px;
+  width: 70%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.loading-chart-skeleton-title-line {
+  height: 10px;
+  background-color: #e2e2e2;
+  background: linear-gradient(
+    90deg,
+    #eae8e8 0%,
+    #e2e2e2 20%,
+    #eae8e8 40%,
+    #eae8e8 60%,
+    #e2e2e2 80%,
+    #eae8e8 100%
+  );
+  background-size: 400% 400%;
+  animation: animate-horizontally 3s ease-in-out infinite;
+}
+
+.loading-chart-skeleton-content {
+  width: 90%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.loading-chart-skeleton-content-line {
+  background-color: #e2e2e2;
+    flex-basis: 10%;
+    flex-direction: row;
+    display: flex;
+    align-items: flex-end;
+    max-width: 120px;
+    margin-right: 10px;
+  background: linear-gradient(
+    0deg,
+    #eae8e8 0%,
+    #e2e2e2 20%,
+    #eae8e8 40%,
+    #eae8e8 60%,
+    #e2e2e2 80%,
+    #eae8e8 100%
+  );
+  background-size: 100% 400%;
+  animation: animate-vertically 2s ease-in-out infinite;
+}
+
+@keyframes animate-horizontally {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: -135% 50%;
+  }
+}
+
+@keyframes animate-vertically {
+  0% {
+    background-position: 50% 0%;
+  }
+  100% {
+    background-position: 50% -100%;
+  }
+}
+
+.loading-chart-skeleton::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.1);
+}
+
+.loading-chart-skeleton-title:first-child {
+  margin-top: 20px;
+}
+
+.loading-chart-skeleton-content-line:nth-child(even) {
+  margin-right: 20px;
+}

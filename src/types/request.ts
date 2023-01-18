@@ -1,4 +1,4 @@
-import { IChartData } from "./charts";
+import { IChartData, ILineChartData } from "./charts";
 
 export interface IRequestConfig {
     url: string;
@@ -9,7 +9,13 @@ export interface IRequestConfig {
 }
 
 export interface IStatsBreakdownRequest {
-    data: IChartData | undefined;
+    data: Array<IChartData>;
+    loading: boolean;
+    error: string | undefined;
+}
+
+export interface IStatsTrendRequest {
+    data: Array<ILineChartData>;
     loading: boolean;
     error: string | undefined;
 }
