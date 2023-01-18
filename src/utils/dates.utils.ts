@@ -6,11 +6,10 @@ export function getReadableDate(date: string, period: EDatePeriod): string {
 
   switch (period) {
     case EDatePeriod.Day:
-      result = `${dateInstance.getDate()} / ${getReadableDate(date,EDatePeriod.Month)}`;
+      result = `${dateInstance.getDate()}/${getReadableDate(date,EDatePeriod.Month)}`;
+      break;
     case EDatePeriod.Week:
-      const daysOfWeek: Array<string> = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-
-      result = daysOfWeek[dateInstance.getDay()];
+      result = dateInstance.toLocaleDateString();
       break;
     case EDatePeriod.Month:
       const months: Array<string> = [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -19,8 +18,10 @@ export function getReadableDate(date: string, period: EDatePeriod): string {
 
     case EDatePeriod.Year:
       result = `${dateInstance.getFullYear()}`;
+      break;
     default:
       result = '';
+      break;
   }
 
   return result;
