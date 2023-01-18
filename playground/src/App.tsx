@@ -1,8 +1,12 @@
 import React from 'react';
-import { StatsPageContainer } from 'mc-react-transactions-lib';
+import { StatsPageContainer, StatsProvider } from 'mc-react-transactions-lib';
 
 const App = () => {
-  return (<StatsPageContainer />);
+  return (
+    <StatsProvider>
+      <StatsPageContainer />
+    </StatsProvider>
+  );
 };
 
 export default App;

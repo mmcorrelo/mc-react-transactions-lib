@@ -1,6 +1,6 @@
 export enum EDatePeriod {
-  Day=0,
-  Week,
-  Month,
-  Year
+  Day = 'day',
+  Week = 'week',
+  Month = 'month',
+  Year = 'year'
 }

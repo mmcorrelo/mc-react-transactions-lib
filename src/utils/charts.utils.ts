@@ -43,7 +43,7 @@ export function configurePieChart({ data, name, text }: IPieChartConfiguration):
 }
 
 export function configureLineChart({ data, text, period }: ILineChartConfiguration): EChartsOption {
-  const { dates, series }: { names: string[]; dates: string[]; series: Array<any>; } = computeLineChartData();
+  const { dates, series }: { dates: string[]; series: Array<any>; } = computeLineChartData(data);
 
   return {
     title: {
@@ -85,7 +85,7 @@ export function configureLineChart({ data, text, period }: ILineChartConfigurati
     series: [...series]
   };
 
-  function computeLineChartData() {
+  function computeLineChartData(data: Array<ILineChartData>) {
     const groupedData: Record<string, Record<string, number>> = data.reduce((result: Record<string, Record<string, number>>, item: ILineChartData) => {
       if (!result[item.name]) {
         result[item.name] = {};
