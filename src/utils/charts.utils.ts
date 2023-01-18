@@ -13,8 +13,8 @@ export function configurePieChart({ data, name, text }: IPieChartConfiguration):
       text,
       x: 'center',
       textStyle: {
-        fontWeight: 'bolder',
-        fontSize: 30
+        fontWeight: 'normal',
+        fontSize: 20
       }
     },
     tooltip: {
@@ -48,10 +48,10 @@ export function configureLineChart({ data, text, period }: ILineChartConfigurati
   return {
     title: {
       text,
-      x: 'center',
+      x: 'left',
       textStyle: {
         fontWeight: 'normal',
-        fontSize: 28
+        fontSize: 20
       }
     },
     tooltip: {

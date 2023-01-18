@@ -14,7 +14,7 @@ export default function ErrorLoadingChart({ width, message }: Props) {
         <path d='M30 30 L70 70' stroke='#e2e2e2' strokeWidth='4' />
         <path d='M70 30 L30 70' stroke='#e2e2e2' strokeWidth='4' />
       </svg>
-      {message && <div>{message}</div>}
+      {message && <div className={styles.errorMessage}>{message}</div>}
     </div>
   );
 }

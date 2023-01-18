@@ -18,6 +18,8 @@ export interface ILineChartData extends IChartData {
 }
 
 export interface IPieChartConfiguration {
+  loading: boolean;
+  error: string | undefined;
   text?: string;
   subtext?: string;
   name: string;
