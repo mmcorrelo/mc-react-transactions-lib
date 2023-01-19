@@ -4,21 +4,32 @@ import { useAppSelector, useAppDispatch } from '../../../../store';
 import { breakdownUserWalletActions } from '../../../../store/breakdownUserWallet.slice';
 import { requestEffect } from '../../../../store/requestEffect';
 import { trendUserWalletActions } from '../../../../store/trendUserWallet.slice';
-import { EDatePeriod, IRequestConfig } from '../../../../types';
+import { EDatePeriod, EMCChartNames, IRequestConfig } from '../../../../types';
+import { IChartFormFields } from '../../../../types/forms';
 import StatsPage from '../../components/StatsPage/StatsPage';
 
 const baseStatsUrl: string = 'http:///localhost:6060/v1/stats';
+
+const defaults: IChartFormFields = {
+  period: EDatePeriod.Day,
+  startDate: '2021-01-01',
+  endDate: '2021-05-01',
+  searchableField: 'user_wallet',
+  searchableFieldValue: 'Mew',
+  nullableField: 'user_wallet',
+}
 
 export default function StatsPageContainer() {
   const bUserWallet = useAppSelector((state) => state.breakdownUserWallet);
   const tUserWallet = useAppSelector((state) => state.trendUserWallet);
 
-  // const [field] = useState('user_wallet'); // output from the StatsPage
-  const [period, setPeriod] = useState(EDatePeriod.Week);
-  const [startDate, setStartDate] = useState('2021-01-01');
-  const [endDate, setEndDate] = useState('2021-05-01');
-  const [searchableField, setSearchableField] = useState('user_wallet');
-  const [nullableField, setNullableField] = useState('user_wallet');
+  const [chartId, setChartId] = useState(EMCChartNames.All);
+  const [period, setPeriod] = useState(defaults.period);
+  const [startDate, setStartDate] = useState(defaults.startDate);
+  const [endDate, setEndDate] = useState(defaults.endDate);
+  const [searchableField, setSearchableField] = useState(defaults.searchableField);
+  const [searchableFieldValue/* , setSearchableFieldValue */] = useState(defaults.searchableFieldValue);
+  const [nullableField, setNullableField] = useState(defaults.nullableField);
   const dispatch = useAppDispatch();
 
   const request = useCallback(( url: string, body: Record<string, unknown>, actions: any) => {
@@ -27,15 +38,32 @@ export default function StatsPageContainer() {
     dispatch(requestEffect(config, actions));
   }, [dispatch, requestEffect]);
 
-  useEffect(() => {
-    request(`${baseStatsUrl}/breakdown`, { field: searchableField }, breakdownUserWalletActions);
-  }, [request, searchableField]);
+  const requestChartDataById = useCallback((chartId: EMCChartNames): void =>  {
+    switch(chartId) {
+      case EMCChartNames.All:
+        request(`${baseStatsUrl}/breakdown`, { field: searchableField }, breakdownUserWalletActions);
+        request(`${baseStatsUrl}/trend`,{ field: searchableField, startDate, endDate, period, value: searchableFieldValue || undefined }, trendUserWalletActions);
+      break;
+      case EMCChartNames.ChartOne:
+        request(`${baseStatsUrl}/trend`,{ field: searchableField, startDate, endDate, period, value: searchableFieldValue || undefined }, trendUserWalletActions);
+        break;
+      case EMCChartNames.ChartTwo:
+          break;
+      case EMCChartNames.ChartThree:
+        request(`${baseStatsUrl}/breakdown`, { field: searchableField }, breakdownUserWalletActions);
+        break;
+      case EMCChartNames.ChartFour:
+        break;
+      case EMCChartNames.ChartFive:
+        break;
+      default:
+        break;
+    }
+  }, [searchableField, period, startDate, endDate, searchableField, searchableFieldValue, chartId]);
 
   useEffect(() => {
-    console.log('searchableField:', searchableField);
-    console.log()
-    request(`${baseStatsUrl}/trend`,{ field: searchableField, startDate, endDate, period/* , value: searchableField */ }, trendUserWalletActions);
-  }, [dispatch, searchableField, period, startDate, endDate, searchableField]);
+    requestChartDataById(chartId);
+  }, [dispatch, requestChartDataById]);
 
   useEffect(() => {
     console.log('nullableField:', nullableField);
@@ -46,13 +74,13 @@ export default function StatsPageContainer() {
       <StatsPage
         bUserWallet={bUserWallet}
         tUserWallet={tUserWallet}
-        period={period}
+        defaults={defaults}
         events= {{
-          onPeriodChange: (value: EDatePeriod) => setPeriod(value),
-          onStartDateChange: (value: string) => setStartDate(value),
-          onEndDateChange:(value: string) => setEndDate(value),
-          onSearchableFieldChange: (value: string) => setSearchableField(value),
-          onNullableFieldChange: (value: string) => setNullableField(value)
+          onPeriodChange: (value: EDatePeriod, id: string) => { setPeriod(value); setChartId(id as EMCChartNames); },
+          onStartDateChange: (value: string, id: string) =>{ setStartDate(value); setChartId(id as EMCChartNames); },
+          onEndDateChange:(value: string, id: string) =>{ setEndDate(value); setChartId(id as EMCChartNames); },
+          onSearchableFieldChange: (value: string, id: string) => { setSearchableField(value); setChartId(id as EMCChartNames); },
+          onNullableFieldChange: (value: string, id: string) => { setNullableField(value); setChartId(id as EMCChartNames); }
         }}
       />
     </React.Fragment>

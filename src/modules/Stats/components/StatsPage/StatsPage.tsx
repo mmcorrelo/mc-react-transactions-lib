@@ -5,20 +5,22 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 import { LineChart, PieChart } from '../../../../components';
-import { IStatsBreakdownRequest, IStatsTrendRequest, EDatePeriod } from '../../../../types';
+import { IStatsBreakdownRequest, IStatsTrendRequest, EMCChartNames } from '../../../../types';
 import ChartControlsFormContainer from '../../containers/ChartControlsFormContainer/ChartControlsFormContainer';
-import { IChartFormCallbackProps } from '../../../../types/forms';
+import { IChartFormCallbackProps, IChartFormFields } from '../../../../types/forms';
 
 interface ChartBoxProps  {
   events?: Partial<IChartFormCallbackProps>;
-  children: React.ReactNode
+  defaults: IChartFormFields;
+  children: React.ReactNode,
+  chartId: string;
 }
 
 function ChartBox(props: ChartBoxProps) {
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
-        <ChartControlsFormContainer {...props.events} />
+        <ChartControlsFormContainer chartId={ props.chartId } {...props.events} {...props.defaults} />
       </Grid>
       <Grid item xs={12}>
         {props.children}
@@ -30,7 +32,7 @@ function ChartBox(props: ChartBoxProps) {
 interface Props {
   bUserWallet: IStatsBreakdownRequest;
   tUserWallet: IStatsTrendRequest;
-  period: EDatePeriod;
+  defaults: IChartFormFields;
   events?: Partial<IChartFormCallbackProps>
 }
 
@@ -42,6 +44,8 @@ export default function (props: Props) {
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <ChartBox
+                chartId={EMCChartNames.ChartOne}
+                defaults={props.defaults}
                 events={{ 
                   ...props.events, 
                   // onPeriodChange: undefined,
@@ -52,14 +56,17 @@ export default function (props: Props) {
                 }}>
                 <LineChart
                   {...props.tUserWallet}
-                  period={props.period}
+                  period={props.defaults.period}
                   name='User Wallets'
                   text='User Wallets'
                 />
               </ChartBox>
             </Grid>
             <Grid item xs={12}>
-              <ChartBox events={{ 
+              <ChartBox 
+                chartId={EMCChartNames.ChartTwo}
+                defaults={props.defaults}
+                events={{ 
                   ...props.events, 
                   // onPeriodChange: undefined,
                   // onStartDateChange: undefined, 
@@ -69,7 +76,7 @@ export default function (props: Props) {
                 }}>
                 <LineChart
                   {...props.tUserWallet}
-                  period={props.period}
+                  period={props.defaults.period}
                   name='User Wallets'
                   text='User Wallets'
                 />
@@ -85,7 +92,9 @@ export default function (props: Props) {
             width='100%'
             height='100%'
           >
-            <ChartBox 
+            <ChartBox
+              chartId={EMCChartNames.ChartThree}
+              defaults={props.defaults} 
               events={{ 
                 ...props.events, 
                 // onPeriodChange: undefined,
@@ -104,6 +113,8 @@ export default function (props: Props) {
         </Grid>
         <Grid item xs={12}>
           <ChartBox
+            chartId={EMCChartNames.ChartFour}
+            defaults={props.defaults} 
             events={{ 
               ...props.events, 
               // onPeriodChange: undefined,
@@ -114,7 +125,7 @@ export default function (props: Props) {
             }}>
             <LineChart
               {...props.tUserWallet}
-              period={props.period}
+              period={props.defaults.period}
               name='User Wallets'
               text='User Wallets'
             />
@@ -122,6 +133,8 @@ export default function (props: Props) {
         </Grid>
         <Grid item xs={12}>
           <ChartBox
+            chartId={EMCChartNames.ChartFive}
+            defaults={props.defaults} 
             events={{ 
               ...props.events, 
               // onPeriodChange: undefined,

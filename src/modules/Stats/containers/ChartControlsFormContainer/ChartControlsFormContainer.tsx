@@ -1,6 +1,6 @@
 import React from 'react';
 import { ICatalogItem } from '../../../../types';
-import { IChartFormCallbackProps } from '../../../../types/forms';
+import { IChartFormCallbackProps, IChartFormFields } from '../../../../types/forms';
 
 import ChartControlsForm from '../../components/ChartControlsForm/ChartControlsForm';
 
@@ -72,7 +72,9 @@ const nullableFields: Array<Partial<ICatalogItem>> = [
   }
 ];
 
-interface Props extends Partial<IChartFormCallbackProps> {}
+interface Props extends Partial<IChartFormCallbackProps> , IChartFormFields {
+  chartId: string;
+}
 
 export default function (props: Props) {
   return (

@@ -7,55 +7,56 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import Select from '@mui/material/Select';
 
 import { EDatePeriod, ICatalogItem } from '../../../../types';
-import { IChartFormCallbackProps } from '../../../../types/forms';
+import { IChartFormCallbackProps, IChartFormFields } from '../../../../types/forms';
 import { SelectChangeEvent } from '@mui/material';
 import { Dayjs } from 'dayjs';
 
-interface Props extends Partial<IChartFormCallbackProps> {
+interface Props extends Partial<IChartFormCallbackProps>, IChartFormFields {
+  chartId: string;
   searchableFields: Array<Partial<ICatalogItem>>;
   nullableFields: Array<Partial<ICatalogItem>>;
 }
 
-export default function (props: Partial<Props>) {
-  const [period, setPeriod] = useState(EDatePeriod.Day);
-  const [startDate, setStartDate] = useState('2021-01-01');
-  const [endDate, setEndDate] = useState('2021-05-01');
-  const [searchableField, setSearchableField] = useState('user_wallet');
-  const [nullableField, setNullableField] = useState('method_payment');
+export default function (props: Props) {
+  const [period, setPeriod] = useState(props.period);
+  const [startDate, setStartDate] = useState(props.startDate);
+  const [endDate, setEndDate] = useState(props.endDate);
+  const [searchableField, setSearchableField] = useState(props.searchableField);
+  const [nullableField, setNullableField] = useState(props.nullableField);
 
   const handlePeriodChange = (event: SelectChangeEvent<EDatePeriod>) => {
     const value: EDatePeriod = event.target.value as EDatePeriod;
 
     setPeriod(value);
-    props.onPeriodChange!(value);
+    props.onPeriodChange!(value, props.chartId!);
   };
 
   const handleStartDateChange = (event: Dayjs) => {
     const value: string = event.format('YYYY-MM-DD');
 
     setStartDate(value);
-    props.onStartDateChange!(value);
+    props.onStartDateChange!(value, props.chartId!);
   };
 
   const handleEndDateChange = (event: Dayjs) => {
     const value: string = event.format('YYYY-MM-DD');
 
     setEndDate(value);
-    props.onEndDateChange!(value);
+    props.onEndDateChange!(value, props.chartId!);
   };
 
   const handleSearchableFieldChange = (event: SelectChangeEvent<string>) => {
     const value: string = event.target.value as string;
 
     setSearchableField(value);
-    props.onSearchableFieldChange!(value);
+    props.onSearchableFieldChange!(value, props.chartId!);
   };
 
   const handleNullableFieldChange = (event: SelectChangeEvent<string>) => {
     const value: string = event.target.value as string;
 
     setNullableField(value);
-    props.onNullableFieldChange!(value);
+    props.onNullableFieldChange!(value, props.chartId!);
   };
 
   return (
