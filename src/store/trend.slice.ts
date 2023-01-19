@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const trendUserWalletSlice = createSlice({
-  name: 'trend-user-wallet',
+const trendSlice = createSlice({
+  name: 'trend',
   initialState: {
     data: [],
     loading: true,
@@ -25,6 +25,6 @@ const trendUserWalletSlice = createSlice({
   }
 });
 
-export const trendUserWalletActions = trendUserWalletSlice.actions;
+export const trendActions = trendSlice.actions;
 
-export default trendUserWalletSlice;
+export default trendSlice;

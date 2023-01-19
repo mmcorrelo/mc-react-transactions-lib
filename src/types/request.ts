@@ -1,4 +1,10 @@
-import { IChartData, ILineChartData } from './charts';
+import { IBarChartData, ILineChartData, IPieChartData } from './charts';
+
+export enum EApiType {
+  Breakdown = 0,
+  Trend,
+  Percentage
+}
 
 export interface IRequestConfig {
   url: string;
@@ -9,13 +15,19 @@ export interface IRequestConfig {
 }
 
 export interface IStatsBreakdownRequest {
-  data: Array<IChartData>;
+  data: Array<IBarChartData>;
   loading: boolean;
   error: string | undefined;
 }
 
 export interface IStatsTrendRequest {
   data: Array<ILineChartData>;
+  loading: boolean;
+  error: string | undefined;
+}
+
+export interface IStatsPercentageRequest {
+  data: Array<IPieChartData>;
   loading: boolean;
   error: string | undefined;
 }

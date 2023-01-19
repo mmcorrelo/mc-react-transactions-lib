@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const breakdownUserWalletSlice = createSlice({
-  name: 'breakdown-user-wallet',
+const breakdownSlice = createSlice({
+  name: 'breakdown',
   initialState: {
     data: [],
     loading: true,
@@ -25,6 +25,6 @@ const breakdownUserWalletSlice = createSlice({
   }
 });
 
-export const breakdownUserWalletActions = breakdownUserWalletSlice.actions;
+export const breakdownActions = breakdownSlice.actions;
 
-export default breakdownUserWalletSlice;
+export default breakdownSlice;

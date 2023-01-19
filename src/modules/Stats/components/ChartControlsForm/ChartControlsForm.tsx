@@ -8,8 +8,8 @@ import Select from '@mui/material/Select';
 
 import { EDatePeriod, ICatalogItem } from '../../../../types';
 import { IChartFormCallbackProps, IChartFormFields } from '../../../../types/forms';
-import { SelectChangeEvent } from '@mui/material';
-import { Dayjs } from 'dayjs';
+import { Grid, SelectChangeEvent } from '@mui/material';
+import dayjs, { Dayjs } from 'dayjs';
 
 interface Props extends Partial<IChartFormCallbackProps>, IChartFormFields {
   chartId: string;
@@ -60,80 +60,79 @@ export default function (props: Props) {
   };
 
   return (
-    <React.Fragment>
-      {props.onPeriodChange && (
-        <FormControl sx={{ m: 1, minWidth: 120 }} size='small'>
-          <InputLabel id='period'>Period</InputLabel>
-          <Select
-            labelId='period'
-            id='period'
-            value={period}
-            label='Period'
-            onChange={handlePeriodChange}
-          >
-            <MenuItem value={EDatePeriod.Day}>Day</MenuItem>
-            <MenuItem value={EDatePeriod.Month}>Month</MenuItem>
-            <MenuItem value={EDatePeriod.Week}>Week</MenuItem>
-            <MenuItem value={EDatePeriod.Year}>Year</MenuItem>
-          </Select>
-        </FormControl>
-      )}
-      {props.onStartDateChange && (
-        <DatePicker
-          label='Start Date'
-          renderInput={(params) => (
-            <TextField size='small' {...params} sx={{ m: 1, maxWidth: 150 }} />
-          )}
-          value={startDate}
-          onChange={handleStartDateChange}
-        />
-      )}
-      {props.onEndDateChange && (
-        <DatePicker
-          label='End Date'
-          renderInput={(params) => (
-            <TextField size='small' {...params} sx={{ m: 1, maxWidth: 150 }} />
-          )}
-          value={endDate}
-          onChange={handleEndDateChange}
-        />
-      )}
-      {props.searchableFields && props.onSearchableFieldChange && (
-        <FormControl sx={{ m: 1, minWidth: 120 }} size='small'>
-          <InputLabel id='field'>Field</InputLabel>
-          <Select
-            labelId='field'
-            id='field'
-            value={searchableField}
-            label='Field'
-            onChange={handleSearchableFieldChange}
-          >
-            {props.searchableFields.map((field: Partial<ICatalogItem>) => (
-              <MenuItem key={field.key} value={field.key}>
-                {field.title}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      )}
-      {props.nullableFields && props.onNullableFieldChange && (
-        <FormControl sx={{ m: 1, minWidth: 120 }} size='small'>
-          <InputLabel id='nullable_field'>Nullable Field</InputLabel>
-          <Select
-            labelId='nullable_field'
-            id='nullable_field'
-            value={nullableField}
-            label='Nullable Field'
-            onChange={handleNullableFieldChange}
-          >
-            {props.nullableFields.map((field: Partial<ICatalogItem>) => (
-              <MenuItem key={field.key} value={field.key}>
-                {field.title}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      )}
-    </React.Fragment>
+    <Grid container spacing={2}>
+        {props.onStartDateChange && (<Grid item xs={4}>
+          <DatePicker
+            label='Start Date'
+            renderInput={(params) => (
+              <TextField size='small' {...params} sx={{ width: '100%' }} />
+            )}
+            maxDate={dayjs(new Date(endDate))}
+            value={startDate}
+            onChange={handleStartDateChange}
+          />
+        </Grid> )}
+        {props.onEndDateChange && (<Grid item xs={4}>
+          <DatePicker
+            label='End Date'
+            minDate={dayjs(new Date(startDate))}
+            renderInput={(params) => (
+              <TextField size='small' {...params} sx={{  width: '100%' }} />
+            )}
+            value={endDate}
+            onChange={handleEndDateChange}
+          />
+        </Grid>)}
+        {props.onPeriodChange && (<Grid item xs={4}>
+          <FormControl sx={{ width: '100%' }} size='small'>
+            <InputLabel id='period'>Period</InputLabel>
+            <Select
+              labelId='period'
+              id='period'
+              value={period}
+              label='Period'
+              onChange={handlePeriodChange}>
+              <MenuItem value={EDatePeriod.Day}>Day</MenuItem>
+              <MenuItem value={EDatePeriod.Month}>Month</MenuItem>
+              <MenuItem value={EDatePeriod.Week}>Week</MenuItem>
+              <MenuItem value={EDatePeriod.Year}>Year</MenuItem>
+            </Select>
+          </FormControl>
+        </Grid>)}
+        {props.searchableFields && props.onSearchableFieldChange && (<Grid item xs={4}>
+          <FormControl sx={{ width: '100%' }} size='small'>
+            <InputLabel id='field'>Field</InputLabel>
+            <Select
+              labelId='field'
+              id='field'
+              value={searchableField}
+              label='Field'
+              onChange={handleSearchableFieldChange}>
+              {props.searchableFields.map((field: Partial<ICatalogItem>) => (
+                <MenuItem key={field.key} value={field.key}>
+                  {field.title}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Grid>)}
+        {props.nullableFields && props.onNullableFieldChange && (<Grid item xs={4}>
+          <FormControl sx={{ width: '100%' }} size='small'>
+            <InputLabel id='nullable_field'>Nullable Field</InputLabel>
+            <Select
+              labelId='nullable_field'
+              id='nullable_field'
+              value={nullableField}
+              label='Nullable Field'
+              onChange={handleNullableFieldChange}>
+              {props.nullableFields.map((field: Partial<ICatalogItem>) => (
+                <MenuItem key={field.key} value={field.key}>
+                  {field.title}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Grid>)}
+    </Grid>
   );
 }

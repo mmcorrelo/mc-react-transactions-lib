@@ -1,14 +1,16 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
-import breakdownUserWalletSlice from './breakdownUserWallet.slice';
-import trendUserWalletSlice from './trendUserWallet.slice';
+import breakdownSlice from './breakdown.slice';
+import percentageSlice from './percentage.slice';
+import trendSlice from './trend.slice';
 
 const store = configureStore({
-    reducer: {
-        breakdownUserWallet: breakdownUserWalletSlice.reducer,
-        trendUserWallet: trendUserWalletSlice.reducer,
-    },
+  reducer: {
+    breakdown: breakdownSlice.reducer,
+    trend: trendSlice.reducer,
+    percentage: percentageSlice.reducer
+  }
 });
 
 export default store;

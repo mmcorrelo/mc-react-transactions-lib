@@ -1,9 +1,9 @@
 import React from 'react';
 import styles from './ChartSkeleton.module.css';
 
-export default function() {
+export default function({height}: any) {
   return (
-    <div className={styles['loading-chart-skeleton']}>
+    <div className={styles['loading-chart-skeleton']} style={{height: height}}>
       <div className={styles['loading-chart-skeleton-title']}>
         <div className={styles['loading-chart-skeleton-title-line']} style={{width: '30%', height: '24px'}}></div>
         <div className={styles['loading-chart-skeleton-title-line']} style={{width: '50%'}}></div>

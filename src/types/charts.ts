@@ -1,15 +1,12 @@
 import { EChartsOption } from 'echarts-for-react';
 import { EDatePeriod } from './dates';
+import { EApiType } from './request';
 
 export enum EMCChartNames {
   All = 'All',
-  ChartOne = 'ChartOne',
-  ChartTwo = 'ChartTwo',
-  ChartThree = 'ChartThree',
-  ChartFour = 'ChartFour',
-  ChartFive = 'ChartFive',
-  ChartSix = 'ChartSix',
-  ChartSeven = 'ChartSeven',
+  TrendChart = 'TrendChart',
+  BreakdownChart = 'BreakdownChart',
+  PercentageChart = 'PercentageChart'
 }
 
 export enum EChartType {
@@ -27,21 +24,37 @@ export interface ILineChartData extends IChartData {
   date: string;
 }
 
-export interface IPieChartConfiguration {
+export interface IPieChartData {
+  value: string;
+  count: string;
+  avg: string;
+  total: string;
+}
+
+export interface IBarChartData extends IChartData { }
+
+export interface IBaseChartConfiguration {
   loading: boolean;
   error: string | undefined;
   text?: string;
   subtext?: string;
+  data: Array<any>;
   name: string;
-  data: Array<IChartData>;
   option?: EChartsOption;
-  height?: number | string;
-  width?: number | string;
+  height?: string;
+  width?: string;
 }
 
-export interface ILineChartConfiguration extends IPieChartConfiguration {
+export interface IPieChartConfiguration extends IBaseChartConfiguration {
+  apiType: EApiType;
+}
+
+export interface ILineChartConfiguration extends IBaseChartConfiguration {
   period: EDatePeriod;
-  data: Array<ILineChartData>;
+
+}
+export interface IBarChartConfiguration extends IBaseChartConfiguration {
+  apiType: EApiType;
 }
 
 
