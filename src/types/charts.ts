@@ -33,3 +33,4 @@ export interface ILineChartConfiguration extends IPieChartConfiguration {
   period: EDatePeriod;
   data: Array<ILineChartData>;
 }
+

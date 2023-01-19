@@ -6,7 +6,7 @@ import { configureLineChart } from '../../utils';
 import ChartSkeleton from '../ChartSkeleton/ChartSkeleton';
 import ErrorLoadingChart from '../ErrorLoadingChart/ErrorLoadingChart';
 
-export default function LineChart(props: ILineChartConfiguration) {
+export default function(props: ILineChartConfiguration) {
     const [option, setOption] = useState({});
 
     useEffect(() => {

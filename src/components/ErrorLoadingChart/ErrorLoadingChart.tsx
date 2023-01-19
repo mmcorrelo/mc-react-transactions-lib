@@ -6,7 +6,7 @@ interface Props {
   message?: string;
 }
 
-export default function ErrorLoadingChart({ width, message }: Props) {
+export default function({ width, message }: Props) {
   return (
     <div style={{ height: width || '400px' }} className={`${styles.container} d-flex flex-column justify-content-center align-items-center p-4`}>
       <svg viewBox='0 0 100 100' className='w-100 h-100'>

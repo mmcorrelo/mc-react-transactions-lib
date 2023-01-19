@@ -6,7 +6,7 @@ import { configurePieChart } from '../../utils';
 import ChartSkeleton from '../ChartSkeleton/ChartSkeleton';
 import ErrorLoadingChart from '../ErrorLoadingChart/ErrorLoadingChart';
 
-export default function PieChart(props: IPieChartConfiguration) {
+export default function(props: IPieChartConfiguration) {
   const [option, setOption] = useState({});
 
   useEffect(() => {

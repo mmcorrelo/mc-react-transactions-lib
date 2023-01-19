@@ -1,10 +1,10 @@
 import React from 'react';
-import { StatsPageContainer, StatsProvider } from 'mc-react-transactions-lib';
+import { StatsProvider, Stats } from 'mc-react-transactions-lib';
 
 const App = () => {
   return (
     <StatsProvider>
-      <StatsPageContainer />
+      <Stats />
     </StatsProvider>
   );
 };
