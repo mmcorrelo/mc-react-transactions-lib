@@ -9,16 +9,19 @@ import { IStatsBreakdownRequest, IStatsTrendRequest, EDatePeriod } from '../../.
 import ChartControlsFormContainer from '../../containers/ChartControlsFormContainer/ChartControlsFormContainer';
 import { IChartFormCallbackProps } from '../../../../types/forms';
 
-interface ChartBoxProps extends Partial<IChartFormCallbackProps> {}
+interface ChartBoxProps  {
+  events?: Partial<IChartFormCallbackProps>;
+  children: React.ReactNode
+}
 
-function ChartBox({ children, props }: { props?: ChartBoxProps, children: React.ReactNode }) {
+function ChartBox(props: ChartBoxProps) {
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
-        <ChartControlsFormContainer {...(props || {})} />
+        <ChartControlsFormContainer {...props.events} />
       </Grid>
       <Grid item xs={12}>
-        {children}
+        {props.children}
       </Grid>
     </Grid>
   );
@@ -38,7 +41,15 @@ export default function (props: Props) {
         <Grid item xs={12} md={7}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <ChartBox {...props.events}>
+              <ChartBox
+                events={{ 
+                  ...props.events, 
+                  // onPeriodChange: undefined,
+                  // onStartDateChange: undefined, 
+                  // onEndDateChange: undefined, 
+                  // onSearchableFieldChange: undefined,
+                  onNullableFieldChange: undefined 
+                }}>
                 <LineChart
                   {...props.tUserWallet}
                   period={props.period}
@@ -48,7 +59,14 @@ export default function (props: Props) {
               </ChartBox>
             </Grid>
             <Grid item xs={12}>
-              <ChartBox {...props.events}>
+              <ChartBox events={{ 
+                  ...props.events, 
+                  // onPeriodChange: undefined,
+                  // onStartDateChange: undefined, 
+                  // onEndDateChange: undefined, 
+                  // onSearchableFieldChange: undefined,
+                  onNullableFieldChange: undefined 
+                }}>
                 <LineChart
                   {...props.tUserWallet}
                   period={props.period}
@@ -67,18 +85,33 @@ export default function (props: Props) {
             width='100%'
             height='100%'
           >
-            <ChartBox {...props.events}>
+            <ChartBox 
+              events={{ 
+                ...props.events, 
+                // onPeriodChange: undefined,
+                // onStartDateChange: undefined, 
+                // onEndDateChange: undefined, 
+                // onSearchableFieldChange: undefined,
+                onNullableFieldChange: undefined 
+              }}>
               <PieChart
                 {...props.bUserWallet}
                 name='User Wallets'
                 text='User Wallets'
               />
             </ChartBox>
-           
           </Box>
         </Grid>
         <Grid item xs={12}>
-          <ChartBox {...props.events}>
+          <ChartBox
+            events={{ 
+              ...props.events, 
+              // onPeriodChange: undefined,
+              // onStartDateChange: undefined, 
+              // onEndDateChange: undefined, 
+              // onSearchableFieldChange: undefined,
+              onNullableFieldChange: undefined 
+            }}>
             <LineChart
               {...props.tUserWallet}
               period={props.period}
@@ -88,7 +121,15 @@ export default function (props: Props) {
           </ChartBox>
         </Grid>
         <Grid item xs={12}>
-          <ChartBox {...props.events}>
+          <ChartBox
+            events={{ 
+              ...props.events, 
+              // onPeriodChange: undefined,
+              // onStartDateChange: undefined, 
+              // onEndDateChange: undefined, 
+              // onSearchableFieldChange: undefined,
+              onNullableFieldChange: undefined 
+            }}>
             <PieChart
               {...props.bUserWallet}
               name='User Wallets'
