@@ -2,8 +2,10 @@ import React, { useCallback, useEffect } from 'react';
 
 import { useAppSelector, useAppDispatch } from '../../../../store';
 import { breakdownActions } from '../../../../store/breakdown.slice';
+import { nullableFieldsActions } from '../../../../store/nullableFieldsSlice.slice';
 import { percentageActions } from '../../../../store/percentage.slice';
 import { requestEffect } from '../../../../store/requestEffect';
+import { searchableFieldsActions } from '../../../../store/searchableFieldsSlice.slice';
 import { trendActions } from '../../../../store/trend.slice';
 import { IRequestConfig } from '../../../../types';
 import { IChartFormFields } from '../../../../types/forms';
@@ -28,8 +30,13 @@ export default function StatsPageContainer({ baseUrl, defaults }: Props) {
     }
   }, [dispatch, requestEffect]);
 
+  useEffect(()=> {
+    request(`${baseUrl}/catalogs/filter`, { searchable: true }, searchableFieldsActions, true);
+    request(`${baseUrl}/catalogs/filter`, { nullable: true }, nullableFieldsActions, true);
+  },[dispatch])
+
   useEffect(() => {
-    request(`${baseUrl}/trend`, {
+    request(`${baseUrl}/stats/trend`, {
       field: trendForm.searchableField,
       startDate: trendForm.startDate,
       endDate: trendForm.endDate,
@@ -38,11 +45,11 @@ export default function StatsPageContainer({ baseUrl, defaults }: Props) {
   }, [dispatch, trendForm]);
 
   useEffect(() => {
-    request(`${baseUrl}/breakdown`, { field: breakdownForm.searchableField }, breakdownActions, breakdownForm.initialized);
+    request(`${baseUrl}/stats/breakdown`, { field: breakdownForm.searchableField }, breakdownActions, breakdownForm.initialized);
   }, [dispatch, breakdownForm]);
 
   useEffect(() => {
-    request(`${baseUrl}/nullablePercentage`, {
+    request(`${baseUrl}/stats/nullablePercentage`, {
       field: percentageForm.searchableField,
       startDate: percentageForm.startDate,
       endDate: percentageForm.endDate,

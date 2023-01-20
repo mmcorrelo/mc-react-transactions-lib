@@ -2,14 +2,18 @@ import { configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
 import breakdownSlice from './breakdown.slice';
+import nullableFieldsSlice from './nullableFieldsSlice.slice';
 import percentageSlice from './percentage.slice';
+import searchableFieldsSlice from './searchableFieldsSlice.slice';
 import trendSlice from './trend.slice';
 
 const store = configureStore({
   reducer: {
     breakdown: breakdownSlice.reducer,
     trend: trendSlice.reducer,
-    percentage: percentageSlice.reducer
+    percentage: percentageSlice.reducer,
+    nullableFields: nullableFieldsSlice.reducer,
+    searchableFields: searchableFieldsSlice.reducer
   }
 });
 

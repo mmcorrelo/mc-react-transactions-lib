@@ -3,7 +3,7 @@ import { Stats, IChartFormFields, EDatePeriod, useAppSelector, formatDate } from
 
 import './App.css';
 
-const baseStatsUrl: string = 'https://3.8.126.93/v1/stats';
+const baseStatsUrl: string = 'https://3.8.126.93/v1';
 
 const defaults: IChartFormFields = {
   period: EDatePeriod.Day,
