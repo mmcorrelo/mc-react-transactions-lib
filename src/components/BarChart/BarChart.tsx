@@ -7,15 +7,14 @@ import ChartSkeleton from '../ChartSkeleton/ChartSkeleton';
 import EmptyChartPlaceholder from '../EmptyChartPlaceholder/EmptyChartPlaceholder';
 import ErrorLoadingChart from '../ErrorLoadingChart/ErrorLoadingChart';
 
-
 interface Props extends IBarChartConfiguration { }
 
 export default function(props: Props) {
-    const [option, setOption] = useState({});
-console.log(option)
-    useEffect(() => {
-      setOption({ ...(props.option || configureBarChart(props)) });
-    }, [props.data, props.text, props.name, props.option, setOption, configureBarChart]);
+  const [option, setOption] = useState({});
+
+  useEffect(() => {
+    setOption({ ...(props.option || configureBarChart(props)) });
+  }, [props.data, props.text, props.name, props.option, setOption, configureBarChart]);
 
   return (
     <React.Fragment>
