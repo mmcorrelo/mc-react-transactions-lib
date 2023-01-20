@@ -74,7 +74,7 @@ export default function (props: Props) {
               <ChartBox
                 defaults={props.defaults} 
                 events={{
-                  onPeriodChange: (period: EDatePeriod) => dispatch(trendActions.setForm({ period })),
+                  onPeriodChange: (period: EDatePeriod) => {dispatch(trendActions.setForm({ period })); console.log(period)},
                   onStartDateChange: (startDate: string) => dispatch(trendActions.setForm({ startDate })),
                   onEndDateChange: (endDate: string) => dispatch(trendActions.setForm({ endDate })),
                   onSearchableFieldChange: (searchableField: string) => dispatch(trendActions.setForm({ searchableField, searchableFieldTitle: searchableField.split("_").join(" ") })),

@@ -9,7 +9,7 @@ import EmptyChartPlaceholder from '../EmptyChartPlaceholder/EmptyChartPlaceholde
 
 export default function(props: ILineChartConfiguration) {
     const [option, setOption] = useState({});
-console.log('period', props.period);
+
     useEffect(() => {
       setOption({ ...(props.option || configureLineChart(props)) });
     }, [props.data, props.text, props.name, props.option, props.period, setOption, configureLineChart]);

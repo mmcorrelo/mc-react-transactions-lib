@@ -1,5 +1,5 @@
-import React from 'react';
-import { StatsProvider, Stats, IChartFormFields, EDatePeriod } from 'mc-react-transactions-lib';
+import React, { useEffect, useState } from 'react';
+import { Stats, IChartFormFields, EDatePeriod, useAppSelector, formatDate } from 'mc-react-transactions-lib';
 
 import './App.css';
 
@@ -16,14 +16,25 @@ const defaults: IChartFormFields = {
 }
 
 const App = () => {
+  const trendForm = useAppSelector((state) => state.trend.form);
+  const breakdownForm = useAppSelector((state) => state.breakdown.form);
+  const percentageForm = useAppSelector((state) => state.percentage.form);
+  const [lastUpdated, setLastUpdated] = useState(new Date());
+
+  useEffect(() => {
+    setLastUpdated(new Date());
+  }, [trendForm, breakdownForm, percentageForm]);
+
   return (
-    <StatsProvider>
+    <>
       <header>CRYPTO TRANSACTIONS STATISTICS</header>
-      <main>
-        <Stats defaults={defaults} baseUrl={baseStatsUrl}/>
-      </main>
-      <footer></footer>
-    </StatsProvider>
+      <main className="container-feed">
+        <Stats defaults={defaults} baseUrl={baseStatsUrl} />
+      </main >
+      <footer>
+          Last Update: {formatDate(lastUpdated)}
+      </footer>
+    </>
   );
 };
 

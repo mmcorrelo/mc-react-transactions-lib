@@ -23,13 +23,16 @@ export function configurePieChart({ data, text, apiType }: IPieChartConfiguratio
 
   return {
     title: {
-      top: 20,
+      top: 0,
       botton: 0,
       text,
       x: 'center',
       textStyle: {
         fontWeight: 'bolder',
-        fontFamily: 'Arial'
+        fontFamily: 'Arial',
+        overflow: 'break',
+        width: 375,
+        lineHeight: 22
       }
     },
     tooltip: {
@@ -60,10 +63,13 @@ export function configureLineChart({ data, text, period }: ILineChartConfigurati
   return {
     title: {
       text,
-      x: 'left',
+      x: 'center',
       textStyle: {
         fontWeight: 'bolder',
-        fontFamily: 'Arial'
+        fontFamily: 'Arial',
+        overflow: 'break',
+        width: 375,
+        lineHeight: 22
       }
     },
     tooltip: {
@@ -123,30 +129,34 @@ function computeLineChartData(data: Array<ILineChartData>) {
 export function configureBarChart({ data, text, apiType }: IBarChartConfiguration): EChartsOption {
   let computedData: Array<Array<number | string>> = [];
 
-  switch(apiType) {
+  switch (apiType) {
     case EApiType.Percentage:
-      computedData = data.map((d: any) => Object.values({ name:d.value, value: +d.avg }));
+      computedData = data.map((d: any) => Object.values({ name: d.value, value: +d.avg * 100 }));
       break;
     case EApiType.Breakdown:
-      computedData = data.map((d: any) => Object.values({ name:d.name, value: +d.value }));
+      computedData = data.map((d: any) => Object.values({ name: d.name, value: +d.value }));
       break;
     case EApiType.Trend:
-      computedData = data.map((d:any) => Object.values({ name:d.name, value: +d.value }));
+      computedData = data.map((d: any) => Object.values({ name: d.name, value: +d.value }));
       break;
   }
-  
+
   return {
     title: {
       text,
-      top: 20,
-      x: 'left',
+      top: 0,
+      x: 'center',
       textStyle: {
         fontWeight: 'bolder',
-        fontFamily: 'Arial'
+        fontFamily: 'Arial',
+        overflow: 'break',
+        width: 370,
+        lineHeight: 22
       }
     },
     tooltip: {
-      trigger: 'axis'
+      trigger: 'item',
+      formatter: ({ data }: any) => `${data[0]}: ${data[1]}%`
     },
     grid: {
       top: '70px',
