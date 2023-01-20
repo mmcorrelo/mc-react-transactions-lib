@@ -7,7 +7,9 @@
 
 ## Install
 
-To install the library in an external project, run `npm install --save mc-react-transactions-lib` in the project's terminal.
+To install the library in an external project, run `npm install --save mc-react-transactions-lib` in the project's terminal. 
+
+<b>Disclamer: the library is not publish on the npm yet. Use the playground project to play it it</b>
 
 ```bash
 npm install --save mc-react-transactions-lib
@@ -109,7 +111,7 @@ return (
 
 ## Demo
 
-To get a better understanding of the full capabilities of the library, check the live demo at https://mc-transactions.web.app/. This demo showcases the various chart types and data visualization options available, giving you a glimpse of the possibilities for displaying the crypto transaction data. Do not hesitate to experiment with the demo and see how the library can be adapted to suit your specific use case.
+To get a better understanding of the full capabilities of the library, check the live demo at https://mc-transactions.web.app/. This demo showcases the various chart types and data visualization options available, giving you a glimpse of the possibilities for displaying the crypto transaction data. Experiment with the demo and check how the library can be adapted to suit different use cases.
 
 
 ## License
