@@ -3,7 +3,7 @@ import { StatsProvider, Stats, IChartFormFields, EDatePeriod } from 'mc-react-tr
 
 import './App.css';
 
-const baseStatsUrl: string = 'http:///localhost:6060/v1/stats';
+const baseStatsUrl: string = 'https://3.8.126.93/v1/stats';
 
 const defaults: IChartFormFields = {
   period: EDatePeriod.Day,
