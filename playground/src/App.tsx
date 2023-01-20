@@ -10,7 +10,8 @@ const defaults: IChartFormFields = {
   startDate: '2021-01-01',
   endDate: '2021-05-01',
   searchableField: 'user_wallet',
-  searchableFieldValue: 'Mew',
+  searchableFieldTitle: 'user wallet',
+  searchableFieldValue: '',
   nullableField: 'zero_conf_time',
 }
 
@@ -21,6 +22,7 @@ const App = () => {
       <main>
         <Stats defaults={defaults} baseUrl={baseStatsUrl}/>
       </main>
+      <footer></footer>
     </StatsProvider>
   );
 };

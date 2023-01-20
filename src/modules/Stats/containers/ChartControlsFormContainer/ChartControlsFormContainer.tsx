@@ -72,9 +72,7 @@ const nullableFields: Array<Partial<ICatalogItem>> = [
   }
 ];
 
-interface Props extends Partial<IChartFormCallbackProps> , IChartFormFields {
-  chartId: string;
-}
+interface Props extends Partial<IChartFormCallbackProps> , IChartFormFields {}
 
 export default function (props: Props) {
   return (

@@ -1,19 +1,22 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
-import { LineChart, BarChart, PieChart } from '../../../../components';
-import { IStatsTrendRequest, EMCChartNames, IStatsPercentageRequest, IStatsBreakdownRequest, EApiType } from '../../../../types';
+import { BarChart, LineChart, PieChart } from '../../../../components';
+import { EApiType, EDatePeriod } from '../../../../types';
 import ChartControlsFormContainer from '../../containers/ChartControlsFormContainer/ChartControlsFormContainer';
 import { IChartFormCallbackProps, IChartFormFields } from '../../../../types/forms';
+import { trendActions } from '../../../../store/trend.slice';
+import { useAppDispatch, useAppSelector } from '../../../../store';
+import { breakdownActions } from '../../../../store/breakdown.slice';
+import { percentageActions } from '../../../../store/percentage.slice';
 
 interface ChartBoxProps  {
   events?: Partial<IChartFormCallbackProps>;
   defaults: IChartFormFields;
   children: React.ReactNode,
-  chartId: string;
 }
 
 function ChartBox(props: ChartBoxProps) {
@@ -24,7 +27,7 @@ function ChartBox(props: ChartBoxProps) {
       </Grid>
       <Grid item xs={12}>
         <Box display="flex" justifyContent="space-between" flexWrap="wrap">
-          <ChartControlsFormContainer chartId={ props.chartId } {...props.events} {...props.defaults} />
+          <ChartControlsFormContainer {...props.events} {...props.defaults} />
         </Box>
       </Grid>
     </Grid>
@@ -32,15 +35,14 @@ function ChartBox(props: ChartBoxProps) {
 }
 
 interface Props {
-  breakdownRequest: IStatsBreakdownRequest;
-  trendRequest: IStatsTrendRequest;
-  percentageRequest: IStatsPercentageRequest;
   defaults: IChartFormFields;
-  events?: Partial<IChartFormCallbackProps>
 }
 
 export default function (props: Props) {
-  const [bTitle, setBTitle] =useState(props.defaults.searchableField);
+  const dispatch = useAppDispatch();
+  const trendStore = useAppSelector((state) => state.trend);
+  const breakdownStore = useAppSelector((state) => state.breakdown);
+  const percentageStore = useAppSelector((state) => state.percentage);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -54,73 +56,57 @@ export default function (props: Props) {
                   width='100%'
                   height='100%'>
                   <ChartBox
-                    chartId={EMCChartNames.BreakdownChart}
                     defaults={props.defaults} 
                     events={{ 
-                      ...props.events, 
-                      onPeriodChange: undefined,
-                      onStartDateChange: undefined, 
-                      onEndDateChange: undefined, 
-                      onSearchableFieldChange: (value, id) => {
-                        props.events!.onSearchableFieldChange!(value, id);
-                        setBTitle(value);
-                      },
-                      onNullableFieldChange: undefined 
+                      onSearchableFieldChange: (searchableField: string) => dispatch(breakdownActions.setForm({ searchableField, searchableFieldTitle: searchableField.split("_").join(" ") })),
                     }}>
                     <PieChart
-                      { ...props.breakdownRequest }
+                      {...breakdownStore.request}
                       height='470px'
                       apiType={ EApiType.Breakdown }
-                      name={bTitle}
-                      text={`Customer breakdown by ${bTitle}`}
+                      name="breakdown"
+                      text={`Breakdown of customer transactions grouped by ${breakdownStore.form.searchableFieldTitle}`}
                     />
                 </ChartBox>
               </Box>
             </Grid>
             <Grid item xs={12}>
               <ChartBox
-                chartId={EMCChartNames.TrendChart}
                 defaults={props.defaults} 
-                events={{ 
-                  ...props.events, 
-                  // onPeriodChange: undefined,
-                  // onStartDateChange: undefined, 
-                  // onEndDateChange: undefined, 
-                  // onSearchableFieldChange: undefined,
-                  onNullableFieldChange: undefined 
+                events={{
+                  onPeriodChange: (period: EDatePeriod) => dispatch(trendActions.setForm({ period })),
+                  onStartDateChange: (startDate: string) => dispatch(trendActions.setForm({ startDate })),
+                  onEndDateChange: (endDate: string) => dispatch(trendActions.setForm({ endDate })),
+                  onSearchableFieldChange: (searchableField: string) => dispatch(trendActions.setForm({ searchableField, searchableFieldTitle: searchableField.split("_").join(" ") })),
                 }}>
                 {<LineChart
-                  {...props.trendRequest}
+                  {...trendStore.request}
                   height='324px'
-                  period={props.defaults.period}
-                  name='User Wallets'
-                  text='User Wallets'
+                  period={trendStore.form.period}
+                  name="trend"
+                  text={`Trend of ${trendStore.form.searchableFieldValue ? `'${trendStore.form.searchableFieldValue}' `: ''}transactions per ${trendStore.form.period}, grouped by ${trendStore.form.searchableFieldTitle}`}
                 />}
               </ChartBox>
             </Grid>
           </Grid>
         </Grid>
-        <Grid item xs={12} sm={6} md={5} borderLeft={1} borderColor='grey.100'>
+        {<Grid item xs={12} sm={6} md={5} borderLeft={1} borderColor='grey.100'>
           <ChartBox
-            chartId={EMCChartNames.PercentageChart}
             defaults={props.defaults}
             events={{ 
-              ...props.events, 
-              onPeriodChange: undefined,
-              // onStartDateChange: undefined, 
-              // onEndDateChange: undefined, 
-              // onSearchableFieldChange: undefined,
-              // onNullableFieldChange: undefined 
+              onStartDateChange:(startDate: string) => dispatch(percentageActions.setForm({ startDate })), 
+              onEndDateChange: (endDate: string) => dispatch(percentageActions.setForm({ endDate })), 
+              onSearchableFieldChange: (searchableField: string) => dispatch(percentageActions.setForm({ searchableField, searchableFieldTitle: searchableField.split("_").join(" ") })),
             }}>
             <BarChart
-              { ...props.percentageRequest }
+              { ...percentageStore.request }
               height='900px'
               apiType={ EApiType.Percentage }
-              name='User Wallets'
-              text='User Wallets'
+              name="percentage"
+              text={`Percentage of Zero-Conf Transactions by ${percentageStore.form.searchableFieldTitle}`}
             />
           </ChartBox>
-        </Grid>
+        </Grid>}
         
       </Grid>
     </LocalizationProvider>

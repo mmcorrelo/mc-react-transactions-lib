@@ -15,3 +15,7 @@ header {
   align-items: center;
   font-size: 32px;
 }
+
+footer {
+    height: 64px;
+}

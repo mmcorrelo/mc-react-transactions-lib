@@ -1,11 +1,11 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 
 import { useAppSelector, useAppDispatch } from '../../../../store';
 import { breakdownActions } from '../../../../store/breakdown.slice';
 import { percentageActions } from '../../../../store/percentage.slice';
 import { requestEffect } from '../../../../store/requestEffect';
 import { trendActions } from '../../../../store/trend.slice';
-import { EDatePeriod, EMCChartNames, IRequestConfig } from '../../../../types';
+import { IRequestConfig } from '../../../../types';
 import { IChartFormFields } from '../../../../types/forms';
 import StatsPage from '../../components/StatsPage/StatsPage';
 
@@ -15,80 +15,51 @@ interface Props {
 }
 
 export default function StatsPageContainer({ baseUrl, defaults }: Props) {
-  const breakdownRequest = useAppSelector((state) => state.breakdown);
-  const trendRequest = useAppSelector((state) => state.trend);
-  const percentageRequest = useAppSelector((state) => state.percentage);
-
-  const [chartId, setChartId] = useState(EMCChartNames.All);
-  const [period, setPeriod] = useState(defaults.period);
-  const [startDate, setStartDate] = useState(defaults.startDate);
-  const [endDate, setEndDate] = useState(defaults.endDate);
-  const [searchableField, setSearchableField] = useState(defaults.searchableField);
-  const [searchableFieldValue/* , setSearchableFieldValue */] = useState(defaults.searchableFieldValue);
-  const [nullableField, setNullableField] = useState(defaults.nullableField);
   const dispatch = useAppDispatch();
+  const breakdownForm = useAppSelector((state) => state.breakdown.form);
+  const trendForm = useAppSelector((state) => state.trend.form);
+  const percentageForm = useAppSelector((state) => state.percentage.form);
 
-  const request = useCallback(( url: string, body: Record<string, unknown>, actions: any) => {
-    const config: IRequestConfig = { url, method: 'POST', body };
-
-    dispatch(requestEffect(config, actions));
+  const request = useCallback((url: string, body: Record<string, unknown>, actions: any, ready: boolean) => {
+    if (ready) {
+      const config: IRequestConfig = { url, method: 'POST', body };
+      
+      dispatch(requestEffect(config, actions));
+    }
   }, [dispatch, requestEffect]);
 
-  const requestChartDataById = useCallback((chartId: EMCChartNames): void =>  {
-    switch(chartId) {
-      case EMCChartNames.All:
-        request(`${baseUrl}/breakdown`, { field: searchableField }, breakdownActions);
-        request(`${baseUrl}/trend`,{ field: searchableField, startDate, endDate, period/* , value: searchableFieldValue || undefined  */}, trendActions);
-        request(`${baseUrl}/nullablePercentage`, { field: searchableField, startDate, endDate, resolution: 2, nullableField }, percentageActions);
-      break;
-      case EMCChartNames.TrendChart:
-        request(`${baseUrl}/trend`,{ field: searchableField, startDate, endDate, period/* , value: searchableFieldValue || undefined */ }, trendActions);
-        break;
-      case EMCChartNames.BreakdownChart:
-        request(`${baseUrl}/breakdown`, { field: searchableField }, breakdownActions);  
-        break;
-      case EMCChartNames.PercentageChart:
-        request(`${baseUrl}/nullablePercentage`, { field: searchableField, startDate, endDate, resolution: 2, nullableField }, percentageActions);
-        break;
-      default:
-        break;
-    }
-  }, [searchableField, period, startDate, endDate, searchableField, searchableFieldValue, nullableField, chartId]);
+  useEffect(() => {
+    request(`${baseUrl}/trend`, {
+      field: trendForm.searchableField,
+      startDate: trendForm.startDate,
+      endDate: trendForm.endDate,
+      period: trendForm.period
+    }, trendActions, trendForm.initialized);
+  }, [dispatch, trendForm]);
 
   useEffect(() => {
-    requestChartDataById(chartId);
-  }, [dispatch, requestChartDataById]);
+    request(`${baseUrl}/breakdown`, { field: breakdownForm.searchableField }, breakdownActions, breakdownForm.initialized);
+  }, [dispatch, breakdownForm]);
+
+  useEffect(() => {
+    request(`${baseUrl}/nullablePercentage`, {
+      field: percentageForm.searchableField,
+      startDate: percentageForm.startDate,
+      endDate: percentageForm.endDate,
+      resolution: 2, nullableField: percentageForm.nullableField
+    }, percentageActions, percentageForm.initialized);
+  }, [dispatch, percentageForm]);
+
+  useEffect(() => {
+    dispatch(trendActions.setForm(defaults));
+    dispatch(breakdownActions.setForm(defaults));
+    dispatch(percentageActions.setForm(defaults));
+
+  }, [dispatch, defaults]);
 
   return (
     <React.Fragment>
-      <StatsPage
-        breakdownRequest={breakdownRequest}
-        trendRequest={trendRequest}
-        percentageRequest={percentageRequest}
-        defaults={defaults}
-        events={{
-          onPeriodChange: (value: EDatePeriod, id: string) => { 
-            setPeriod(value); 
-            setChartId(id as EMCChartNames); 
-          },
-          onStartDateChange: (value: string, id: string) => { 
-            setStartDate(value); 
-            setChartId(id as EMCChartNames); 
-          },
-          onEndDateChange: (value: string, id: string) => { 
-            setEndDate(value);
-            setChartId(id as EMCChartNames); 
-          },
-          onSearchableFieldChange: (value: string, id: string) => { 
-            setSearchableField(value); 
-            setChartId(id as EMCChartNames); 
-          },
-          onNullableFieldChange: (value: string, id: string) => {
-            setNullableField(value); 
-            setChartId(id as EMCChartNames);
-          }
-        }}
-      />
+      <StatsPage defaults={defaults}/>
     </React.Fragment>
   );
 }

@@ -12,7 +12,6 @@ import { Grid, SelectChangeEvent } from '@mui/material';
 import dayjs, { Dayjs } from 'dayjs';
 
 interface Props extends Partial<IChartFormCallbackProps>, IChartFormFields {
-  chartId: string;
   searchableFields: Array<Partial<ICatalogItem>>;
   nullableFields: Array<Partial<ICatalogItem>>;
 }
@@ -28,35 +27,35 @@ export default function (props: Props) {
     const value: EDatePeriod = event.target.value as EDatePeriod;
 
     setPeriod(value);
-    props.onPeriodChange!(value, props.chartId!);
+    props.onPeriodChange!(value);
   };
 
   const handleStartDateChange = (event: Dayjs) => {
     const value: string = event.format('YYYY-MM-DD');
 
     setStartDate(value);
-    props.onStartDateChange!(value, props.chartId!);
+    props.onStartDateChange!(value);
   };
 
   const handleEndDateChange = (event: Dayjs) => {
     const value: string = event.format('YYYY-MM-DD');
 
     setEndDate(value);
-    props.onEndDateChange!(value, props.chartId!);
+    props.onEndDateChange!(value);
   };
 
   const handleSearchableFieldChange = (event: SelectChangeEvent<string>) => {
     const value: string = event.target.value as string;
 
     setSearchableField(value);
-    props.onSearchableFieldChange!(value, props.chartId!);
+    props.onSearchableFieldChange!(value);
   };
 
   const handleNullableFieldChange = (event: SelectChangeEvent<string>) => {
     const value: string = event.target.value as string;
 
     setNullableField(value);
-    props.onNullableFieldChange!(value, props.chartId!);
+    props.onNullableFieldChange!(value);
   };
 
   return (
@@ -101,12 +100,12 @@ export default function (props: Props) {
         </Grid>)}
         {props.searchableFields && props.onSearchableFieldChange && (<Grid item xs={4}>
           <FormControl sx={{ width: '100%' }} size='small'>
-            <InputLabel id='field'>Field</InputLabel>
+            <InputLabel id='field'>Aggregation Type</InputLabel>
             <Select
               labelId='field'
               id='field'
               value={searchableField}
-              label='Field'
+              label='Aggregation Type'
               onChange={handleSearchableFieldChange}>
               {props.searchableFields.map((field: Partial<ICatalogItem>) => (
                 <MenuItem key={field.key} value={field.key}>

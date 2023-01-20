@@ -2,13 +2,6 @@ import { EChartsOption } from 'echarts-for-react';
 import { EDatePeriod } from './dates';
 import { EApiType } from './request';
 
-export enum EMCChartNames {
-  All = 'All',
-  TrendChart = 'TrendChart',
-  BreakdownChart = 'BreakdownChart',
-  PercentageChart = 'PercentageChart'
-}
-
 export enum EChartType {
   Breakdown = 0,
   Trend,

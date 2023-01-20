@@ -28,8 +28,8 @@ export function configurePieChart({ data, text, apiType }: IPieChartConfiguratio
       text,
       x: 'center',
       textStyle: {
-        fontWeight: 'normal',
-        fontSize: 20
+        fontWeight: 'bolder',
+        fontFamily: 'Arial'
       }
     },
     tooltip: {
@@ -62,8 +62,8 @@ export function configureLineChart({ data, text, period }: ILineChartConfigurati
       text,
       x: 'left',
       textStyle: {
-        fontWeight: 'normal',
-        fontSize: 20
+        fontWeight: 'bolder',
+        fontFamily: 'Arial'
       }
     },
     tooltip: {
@@ -141,8 +141,8 @@ export function configureBarChart({ data, text, apiType }: IBarChartConfiguratio
       top: 20,
       x: 'left',
       textStyle: {
-        fontWeight: 'normal',
-        fontSize: 20
+        fontWeight: 'bolder',
+        fontFamily: 'Arial'
       }
     },
     tooltip: {

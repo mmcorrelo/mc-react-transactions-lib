@@ -15,7 +15,6 @@ export function getReadableDate(date: string, period: EDatePeriod): string {
       const months: Array<string> = [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
       result = months[dateInstance.getMonth()];
       break;
-
     case EDatePeriod.Year:
       result = `${dateInstance.getFullYear()}`;
       break;
